@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{admin/dashboardLayout.html}">
+
+<head>
+</head>
+
+<body>
+    <div class="card" layout:fragment="content">
+        <div class="card-header">
+            <h2>Category List</h2>
+            <div class="alert alert-success" role="alert">
+                <label for="" th:text="${message}"></label>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <form th:action="@{/admin/accounts?searchPage}">
+                        <div class="form-inline float-left">
+                            <label for="">Name:</label>
+                            <input type="text" class="form-control ml-2" name="name" placeholder="Name">
+                            <button class="btn btn-outline-primary ml-2">Search</button>
+                        </div>
+                    </form>
+                    <div class="float-right">
+                        <a th:href="@{/admin/accounts/add}" class="btn btn-outline-primary">Add More Account</a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <table class="table table-striped">
+            <tr>
+                <td>Category ID</td>
+                <td>Name</td>
+
+                <td>&nbsp;</td>
+            </tr>
+            <tr th:each="item : ${categoryPage.content}">
+                <td>[[${item.id}]]</td>
+                <td th:text="${item.name}"></td>
+                <td></td>
+            </tr>
+        </table>
+
+
+        <div class="card-footer">
+            <nav aria-label="Page navigation example" class="text-center" th:if="${categoryPage.totalPages > 0}">
+                <ul class="pagination justify-content-center">
+                    <li th:class="${0 == categoryPage.number +1} ? 'page-item active' : 'page-item'"><a
+                            class="page-link"
+                            th:href="@{/admin/categories?searchPage(name=${name}, size=${categoryPage.size}, page= ${1})}">Fist</a>
+                    </li>
+                    <li th:each="pageNum : ${pageNumbers}" th:if="${categoryPage.totalPages > 1}"
+                        th:class="${pageNum == categoryPage.number + 1} ? 'page-item active' : 'page-item'">
+
+                        <a class="page-link"
+                            th:href="@{/admin/categories?searchPage(name=${name}, size=${categoryPage.size}, page= ${pageNum})}"
+                            th:text="${pageNum}"></a>
+                    </li>
+
+                    <li th:class="${categoryPage.totalPages == categoryPage.number} ? 'page-item active' : 'page-item'">
+                        <a class="page-link"
+                            th:href="@{/admin/categories?searchPage(name=${name}, size=${categoryPage.size}, page= ${categoryPage.totalPages})}">Last</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</body>
+
+</html>
