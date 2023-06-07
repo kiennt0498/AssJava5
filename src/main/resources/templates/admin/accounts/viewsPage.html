@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{admin/dashboardLayout.html}">
+
+<head>
+</head>
+
+<body>
+    <div class="card" layout:fragment="content">
+        <div class="card-header">
+            <h2>Products List</h2>
+            <div  class="alert alert-success" role="alert">
+                <label for="" th:text="${message}"></label>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <form th:action="@{/admin/accounts?searchPage}">
+                        <div class="form-inline float-left">
+                            <label for="">Name:</label>
+                            <input type="text" class="form-control ml-2" name="name" placeholder="Name">
+                            <button class="btn btn-outline-primary ml-2">Search</button>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <tr>
+                <td>Image</td>
+                <td>Username</td>
+                <td>Full Name</td>
+                <td>Email</td>
+                <td>Activated</td>
+                <td>Admin</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr th:each="item : ${accountPage.content}">
+                <td align="center"><img th:src="@{'/uploads/' + ${item.photo}}" width="40" height="40" /></td>
+                <td th:text="${item.username}"></td>
+                <td th:text="${item.fullname}"></td>
+                <td th:text="${item.email}"></td>
+                <td th:text="${item.activated}"></td>
+                <td th:text="${item.admin}"></td>
+
+                <td>
+                    <a th:href="@{'/admin/accounts/edit/' + ${item.username}}" aria-hidden="true" class="btn btn-primary"><i
+                            class="fa fa-edit"></i>
+                        Edit</a>
+                    <a th:data-id="${item.username}" th:data-name="${item.fullname}" 
+                        onclick="showModal(this.getAttribute('data-id'),this.getAttribute('data-name'))" 
+                        aria-hidden="true" class="btn btn-danger"><i
+                        class="fa fa-trash"></i>
+                        Delete</a>
+
+                </td>
+            </tr>
+        </table>
+
+        <script>
+            function showModal(id,name){
+                $('#productName').text(name);
+                $('#yesOption').attr('href', '/admin/accounts/del/' + id);
+                $('#confirmationId').modal('show');
+            }
+        </script>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="confirmationId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                        Do you want to delete "<span id="productName"></span>" ?
+                    </div>
+                    <div class="modal-footer">
+                        <a id="yesOption" type="button" class="btn btn-danger">Yes</a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <nav aria-label="Page navigation example" class="text-center" th:if="${accountPage.totalPages > 0}">
+                <ul class="pagination justify-content-center">
+                    <li th:class="${0 == accountPage.number +1} ? 'page-item active' : 'page-item'"><a
+                            class="page-link"
+                            th:href="@{/admin/accounts(name=${name}, size=${accountPage.size}, page= ${1})}">Fist</a>
+                    </li>
+                    <li th:each="pageNum : ${pageNumbers}" th:if="${accountPage.totalPages > 1}"
+                        th:class="${pageNum == accountPage.number + 1} ? 'page-item active' : 'page-item'">
+
+                        <a class="page-link"
+                            th:href="@{/admin/accounts(name=${name}, size=${productPage.size}, page= ${pageNum})}"
+                            th:text="${pageNum}"></a>
+                    </li>
+
+                    <li th:class="${accountPage.totalPages == accountPage.number} ? 'page-item active' : 'page-item'">
+                        <a class="page-link"
+                            th:href="@{/admin/accounts(name=${name}, size=${accountPage.size}, page= ${accountPage.totalPages})}">last</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</body>
+
+</html>

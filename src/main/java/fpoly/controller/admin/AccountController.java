@@ -1,5 +1,7 @@
 package fpoly.controller.admin;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,17 +19,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fpoly.entity.Account;
-import fpoly.entity.Category;
 import fpoly.service.AccountService;
-import fpoly.service.CategoryService;
+import fpoly.service.ParamService;
 
 @Controller
 @RequestMapping("admin/accounts")
@@ -35,6 +39,9 @@ public class AccountController {
 	
 	@Autowired
 	AccountService service;
+	
+	@Autowired
+	ParamService paramService;
 	
 	@GetMapping("add")
 	public String add(Model model) {
@@ -56,14 +63,21 @@ public class AccountController {
 		service.deleteById(id);
 		return "redirect:/admin/accounts";
 	}
+	
 	@PostMapping("saveOrUpdate")
-	public String saveOrUpdate(Model model,@Valid @ModelAttribute("account") Account ac,BindingResult result) {
+	public String saveOrUpdate(Model model,@Valid @ModelAttribute("account") Account ca,
+								BindingResult result,
+								@RequestParam("image") MultipartFile imageFile) {
 		if(result.hasErrors()) {
 			model.addAttribute("message", "Vui long nhap lai");
 			return "admin/accounts/addOrEdit";
 		}
+		String fileName = StringUtils.cleanPath(imageFile.getOriginalFilename());
+		paramService.save(imageFile);
+		ca.setPhoto(fileName);
+		
 		try {
-			service.save(ac);
+			service.save(ca);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -72,11 +86,25 @@ public class AccountController {
 		return "forward:/admin/accounts";
 	}
 	
-//	@RequestMapping()
-//	public String views(Model model) {
-//		model.addAttribute("category", service.findAll());
-//		return "admin/categories/views";
-//	}
+	@GetMapping("changePass")
+	public String changePass(@RequestParam("username") String name,
+								@RequestParam("newPass") String codePass,
+								RedirectAttributes param) {
+		
+		String username = URLDecoder.decode(name,StandardCharsets.ISO_8859_1);
+		String pass = URLDecoder.decode(codePass,StandardCharsets.ISO_8859_1);
+		
+		Account ac = service.findById(username).orElse(null);
+		
+		ac.setPassword(pass);
+		
+		service.save(ac);
+		
+		param.addAttribute("successMessage", true);
+		
+		return "redirect:/admin/accounts/edit/" + username;
+	}
+
 	
 	
 	
@@ -89,7 +117,7 @@ public class AccountController {
 		if(currentPage != 0) currentPage--;
 		int pageSize = size.orElse(5);
 		
-		Pageable pageable = PageRequest.of(currentPage, pageSize,Sort.by(Direction.ASC,"id"));
+		Pageable pageable = PageRequest.of(currentPage, pageSize,Sort.by(Direction.ASC,"username"));
 		Page<Account> resultPage = null;
 		
 		if(StringUtils.hasText(name)) {
@@ -115,7 +143,7 @@ public class AccountController {
 		
 		
 		
-		model.addAttribute("categoryPage", resultPage);
+		model.addAttribute("accountPage", resultPage);
 		
 		return "admin/accounts/viewsPage";
 	}

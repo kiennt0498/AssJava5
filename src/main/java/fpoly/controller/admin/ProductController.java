@@ -75,6 +75,7 @@ public class ProductController {
 		service.deleteById(id);
 		return "redirect:/admin/products";
 	}
+	
 	@PostMapping("saveOrUpdate")
 	public String saveOrUpdate(Model model,@Valid @ModelAttribute("product") Product ca,
 								BindingResult result,

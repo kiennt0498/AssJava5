@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{admin/dashboardLayout.html}">
+
+<head> </head>
+
+<body>
+  <section class="mt-3" layout:fragment="content">
+    <div id="successMessage" th:if="${param.successMessage}" class="alert alert-success">
+      Thay đổi mật khẩu thành công!
+    </div>
+    <form action="/admin/accounts/saveOrUpdate" method="post" th:object="${account}" enctype="multipart/form-data">
+      <div class="card">
+        <div class="card-header">
+          <h2>Account Edit</h2>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-3">
+              <script>
+                function chooseFile(fileInput) {
+                  if (fileInput.files && fileInput.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                      $('#image').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(fileInput.files[0]);
+                  }
+                }
+              </script>
+              <div class="border p-3">
+                <img src="http://mnhduong-nt.khanhhoa.edu.vn/images/no-image.png" alt="" id="image" class="img-fluid">
+              </div>
+              <div class="form-group">
+                <input type="file" class="form-control mt-3" name="image" onchange="chooseFile(this)">
+                <span class="form-text text-muted">Không để trống image</span>
+              </div>
+
+            </div>
+            <div class="col-9">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Username</label>
+                <input type="text" class="form-control" th:field="*{username}" placeholder="Username" readonly />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Full Name</label>
+                <input type="text" class="form-control" th:field="*{fullname}" placeholder="Full Name" />
+                <span th:if="${#fields.hasErrors('fullname')}" class="">Vui lòng nhập tên</span>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Email</label>
+                <input type="email" class="form-control" th:field="*{email}" placeholder="Price" />
+                <span th:if="${#fields.hasErrors('email')}" class="">Vui lòng nhập email</span>
+              </div>
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" th:field="*{admin}">
+                <label class="form-check-label mr-5" for="exampleCheck1">Admin</label>
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" th:field="*{activated}">
+                <label class="form-check-label" for="exampleCheck1">Activated</label>
+              </div>
+              <input type="text" th:field="*{password}" id="pass" hidden>
+            </div>
+
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-primary">
+              Update
+
+            </button>
+
+            <button type="reset" class="btn btn-success">Reset</button>
+            <a href="/admin/accounts" class="btn btn-warning">List Account</a>
+            <a th:data-id="*{username}" onclick="showModal()" class="btn btn-outline-info">Change Password</a>
+          </div>
+        </div>
+
+        <script>
+          function showModal() {
+            $('#confirmationId').modal('show');
+          }
+
+          function checkPass(id) {
+            var newPass = document.getElementById('pass1').value;
+            var checkPass = document.getElementById('pass2').value;
+
+            if (newPass !== checkPass) {
+              $('#error').text("Mật khẩu xác nhận không giống với mật khẩu mới");
+            } else {
+              var url = "/admin/accounts/changePass?username=" + encodeURIComponent(id) + "&newPass=" + encodeURIComponent(newPass);
+              document.getElementById('yesOption').setAttribute('href', url);
+            }
+          }
+        </script>
+        <!-- Modal -->
+        <div class="modal fade" id="confirmationId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Change Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <label for="" id="error"></label>
+                <div class="form-group">
+                  <label for="my-input">Mật khẩu mới</label>
+                  <input id="pass1" class="form-control" type="text" name="newPass">
+                </div>
+                <div class="form-group">
+                  <label for="my-input">Xác nhận mật khẩu</label>
+                  <input id="pass2" class="form-control" type="text" name="confirmPass">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <a th:data-id="*{username}" id="yesOption" onclick="checkPass(this.getAttribute('data-id'))"
+                  type="button" class="btn btn-danger">Yes</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+    </form>
+
+  </section>
+</body>
+
+</html>
