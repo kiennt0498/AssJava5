@@ -40,4 +40,6 @@ public interface AccountService {
 
 	Iterable<Account> findAll(Sort sort);
 
+	Account login(String username, String pass);
+
 }

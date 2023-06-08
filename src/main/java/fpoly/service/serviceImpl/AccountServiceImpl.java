@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import fpoly.DAO.AccountDao;
@@ -14,6 +15,13 @@ import fpoly.service.AccountService;
 
 @Service
 public class AccountServiceImpl implements AccountService{
+	
+	@Autowired
+	AccountDao dao;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
 	
 	@Override
 	public Iterable<Account> findAll(Sort sort) {
@@ -25,11 +33,11 @@ public class AccountServiceImpl implements AccountService{
 		return dao.findAll(pageable);
 	}
 
-	@Autowired
-	AccountDao dao;
+	
 
 	@Override
 	public <S extends Account> S save(S entity) {
+		entity.setPassword(passwordEncoder.encode(entity.getPassword()));
 		return dao.save(entity);
 	}
 
@@ -93,5 +101,13 @@ public class AccountServiceImpl implements AccountService{
 		return dao.findByFullnameContaining(fullname, pageable);
 	}
 	
-	
+	@Override
+	public Account login(String username,String pass) {
+		Optional<Account> ac = dao.findById(username);
+		if(ac.isPresent()&& passwordEncoder.matches(pass, ac.get().getPassword())) {
+			ac.get().setPassword("");
+			return ac.get();
+		}
+		return null;
+	}
 }
