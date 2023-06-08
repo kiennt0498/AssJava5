@@ -15,7 +15,7 @@ public class AuthInterceptorConfig implements WebMvcConfigurer{
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(authInter).addPathPatterns("/admin/**");
+		//registry.addInterceptor(authInter).addPathPatterns("/admin/**");
 	}
 	
 	
