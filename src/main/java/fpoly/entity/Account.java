@@ -29,7 +29,7 @@ public class Account implements Serializable{
 	@Column(columnDefinition = "nvarchar(50)")
 	@NotBlank
 	private String fullname;
-	@Column(columnDefinition = "varchar(30)")
+	@Column(columnDefinition = "varchar(100)")
 	@NotBlank
 	@NotEmpty
 	private String password;

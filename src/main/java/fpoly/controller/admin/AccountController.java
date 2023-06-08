@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import fpoly.config.SecurityConfig;
 import fpoly.entity.Account;
 import fpoly.service.AccountService;
 import fpoly.service.ParamService;
@@ -42,6 +43,7 @@ public class AccountController {
 	
 	@Autowired
 	ParamService paramService;
+	
 	
 	@GetMapping("add")
 	public String add(Model model) {

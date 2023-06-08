@@ -17,7 +17,7 @@ import fpoly.service.CookieService;
 import fpoly.service.SessionService;
 
 @Controller
-@RequestMapping("admin")
+
 public class LoginController {
 	@Autowired
 	AccountService service;
@@ -28,13 +28,13 @@ public class LoginController {
 	@Autowired
 	CookieService cookie;
 	
-	@GetMapping("login")
+	@GetMapping("adlogin")
 	public String login(Model model) {
-		model.addAttribute("account", new AccountLogin());
+		model.addAttribute("accountLogin", new AccountLogin());
 		return "admin/accounts/login";
 	}
 	
-	@PostMapping("login")
+	@PostMapping("adlogin")
 	public String checkLogin(@Validated @ModelAttribute("accountLogin") AccountLogin ac,
 								BindingResult result,
 								Model model) {
@@ -50,10 +50,32 @@ public class LoginController {
 			return "admin/accounts/login";
 		}
 		
-		if(ac.isCheck()) cookie.add("username", ac.getUsername(), 10);
+		if(ac.getCheck()) {
+			cookie.add("user", ac.getUsername(), 10);
+		}else {
+			if(!cookie.getValue("user").isEmpty()) cookie.remove("user");		
+		}
 		
-		session.set("username", ac.getUsername());
+		session.set("user", ac.getUsername());
 		
-		return "admin/products";
+		Object ruri = session.get("redirect-uri");
+		
+		if(ruri != null) {
+			session.remove("redirect-uri");
+			return "redirect:" + ruri;
+		}
+		
+		
+		model.addAttribute("accountName", ac.getUsername());
+		model.addAttribute("isCheck", true);
+		
+		return "forward:/admin/products";
+	}
+	
+	@GetMapping("admin/logout")
+	public String logout(Model model) {
+		model.addAttribute("isCheck", false);
+		session.remove("user");
+		return "redirect:/admin/login";
 	}
 }
