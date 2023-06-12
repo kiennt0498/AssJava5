@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+  <title>Title</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" th:href="@{css/index.css}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+  <main>
+    <nav class="container-fluid">
+      
+        <div th:replace="site/fragments/nav::nav"></div>
+      
+    </nav>
+    <section class="container">
+      
+        <div layout:fragment="content"></div>
+      
+    </section>
+    <footer class="row container-fluid mt-3">
+      <div class="col">
+        <div th:replace="site/fragments/footer::footer"></div>
+      </div>
+    </footer>
+  </main>
+  <!-- Optional JavaScript -->
+  <div class="modal fade" id="login-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content p-4">
+        <h3>Login</h3>
+        <form action="" class="was-validated" method="post">
+          <div class="form-group is-invalid">
+            <label>UserName</label>
+            <input type="text" class="form-control  is-valid" name="username" required placeholder="Enter UserName">
+            <span class="invalid-feedback">Vui lòng nhập họ tên</span>
+          </div>
+          <div class="form-group is-invalid">
+            <label>Password:</label>
+            <input type="password" class="form-control is-valid" name="password" placeholder="Enter password" required>
+            <span class="invalid-feedback"> Vui lòng nhập mật khẩu</span>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox"> Remember me</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-primary" id="close">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- form dang ky -->
+  <div class="modal fade" id="register-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content p-4">
+        <h2>Register Account</h2>
+        <form action="" method="post" class="was-validated">
+          <div class="form-group is-invalid">
+            <label>UserName</label>
+            <input type="text" class="form-control is-valid" path="username" placeholder="Enter UserName" required />
+            <span class="invalid-feedback">Vui lòng nhập tài khoản</span>
+          </div>
+          <div class="form-group is-valid">
+            <label>Password:</label>
+            <input type="password" class="form-control is-valid" path="password" placeholder="Enter password"
+              required />
+            <span class="invalid-feedback">Vui lòng nhập pass</span>
+          </div>
+          <div class="form-group is-valid">
+            <label>FullName</label>
+            <input type="text" class="form-control  is-valid" path="fullname" placeholder="Enter fullname" required />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" path="email" placeholder="Enter email" required />
+            <span class="invalid-feedback">Vui lòng nhập đúng email</span>
+          </div>
+          <div class="form-group">
+            <label>Photo</label>
+            <input type="file" class="form-control" path="photo" placeholder="Enter photo" />
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-primary" id="close">Cancel</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- form quen mat khau -->
+  <div class="modal fade" id="DMK-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content p-4">
+        <h3>Đổi mật khẩu</h3>
+        <form action="" class="was-validated" method="post">
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Tài khoản</label>
+                <input type="text" class="form-control is-valid" placeholder="Tài khoản" required>
+                <span class="invalid-feedback">Vui lòng nhập tài khoản</span>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Mật khẩu</label>
+                <input type="password" class="form-control is-valid" placeholder="Mật khẩu" required>
+                <span class="invalid-feedback">Vui lòng nhập mật khẩu</span>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="pass">Mật khẩu mới</label>
+                <input type="password" class="form-control is-valid" placeholder="Mật khẩu mới" required>
+                <span class="invalid-feedback">Vui lòng nhập mật khẩu mới</span>
+              </div>
+              <div class="form-group">
+                <label for="email">Xác nhận mật khẩu</label>
+                <input type="password" class="form-control is-valid" placeholder="Xác nhận mật khẩu" required>
+                <span class="invalid-feedback">Vui lòng nhập mật khẩu xác nhận</span>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+          <button type="button" class="btn btn-primary" id="close">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- form quen mat khau -->
+  <div class="modal fade" id="QMK-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content p-4">
+        <h3>Quên mật khẩu</h3>
+        <form action="" class="was-validated" method="post">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Tài khoản</label>
+            <input type="text" class="form-control is-valid" id="exampleInputEmail1" aria-describedby="emailHelp"
+              placeholder="Tài khoản" required>
+            <span class="invalid-feedback">Vui lòng nhập tài khoản</span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Email</label>
+            <input type="email" class="form-control is-valid" id="exampleInputPassword1" placeholder="Email" required>
+            <span class="invalid-feedback">Vui lòng nhập email đã đăng ký</span>
+          </div>
+          <button type="submit" class="btn btn-primary">Lấy mật khẩu</button>
+          <button type="button" class="btn btn-primary" id="close">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    function openModal(modalId) {
+      var modal = document.getElementById(modalId);
+      $(modal).modal('show');
+    }
+
+    // Khi người dùng nhấp vào nút đóng hoặc bấm bất kỳ nơi nào bên ngoài modal, ẩn modal form
+    var closeButtons = document.querySelectorAll(".modal #close");
+    closeButtons.forEach(function (button) {
+      button.onclick = function () {
+        var modal = button.closest(".modal");
+        modal.style.display = "none";
+      };
+    });
+  </script>
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://kit.fontawesome.com/ce7b1cdc6d.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

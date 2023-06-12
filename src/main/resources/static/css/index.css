@@ -1,0 +1,64 @@
+.navbar{
+    color: aliceblue;
+    background-color: rgb(1,110,89);
+    
+}
+button.navbar-toggler{
+    border: 1px solid black;
+}
+
+.navbar li a{
+    width: 120px;
+    color: aliceblue;
+}
+.navbar li a:hover{
+    color: rgb(228,205,96);
+    
+}
+.active a{   
+    border-bottom: 2px rgb(228,205,96) solid;
+}
+
+.dropdown-menu .dropdown-item{
+    color: black;
+}
+.dropdown-menu .dropdown-item:hover{
+    width: 150px;
+    color: rgb(44,49,207);
+    border-bottom: 2px rgb(44,49,207) solid;
+    background-color: white;
+}
+
+footer .heard{
+    background-image: url("../image/bg_form-2.jpeg");
+}
+footer .footer-body{
+    padding-top: 5%;
+    color: aliceblue;
+    background-color: rgb(1,110,89);
+}
+
+.LienHe{
+    
+    font-size: 3em;
+    
+}
+.fa-google{
+    color: #dd4b39;
+}
+.fa-youtube{
+    color: #bb0000;
+}
+.fa-square-facebook{
+    color: #3b5998;
+}
+
+
+.modal{
+    height: 0;
+    overflow: hidden;
+    transition: height 0.5s ease;
+}
+.modal.show{
+    max-height: 500px;
+}

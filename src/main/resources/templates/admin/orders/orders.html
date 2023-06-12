@@ -12,7 +12,7 @@
             
             <div class="row">
                 <div class="col">
-                    <form th:action="@{/admin/products?searchPage}">
+                    <form th:action="@{/admin/orders?searchPage}">
                         <div class="form-inline float-left">
                             <label for="">Name:</label>
                             <input type="text" class="form-control ml-2" name="name" placeholder="Name">
@@ -21,7 +21,7 @@
                     </form>
                     <div class="float-right">
                         
-                        <a th:href="@{/admin/products/add}" class="btn btn-outline-primary">Add More Product</a>
+                        <!-- loc theo ngay -->
                     </div>
                 </div>
             </div>
@@ -31,6 +31,7 @@
             <tr>
                 <td>Order ID</td>
                 <td>UserName</td>
+                <td>Full Name</td>
                 <td>Create Date</td>
                 <td>Address</td>
                 <td>&nbsp;</td>
@@ -38,10 +39,11 @@
             <tr th:each="item : ${orderPage.content}">
                 <td>[[${item.id}]]</td>
                 <td th:text="${item.account.username}"></td>
+                <td th:text="${item.account.fullname}"></td>
                 <td th:text="${item.createDate}"></td>
                 <td th:text="${item.address}"></td>
                 <td>
-                    <a th:href="@{'/admin/products/edit/' + ${item.id}}" aria-hidden="true" class="btn btn-primary">
+                    <a th:href="@{'/admin/orders/edit/' + ${item.id}}" aria-hidden="true" class="btn btn-primary">
                         <i class="fa-solid fa-circle-info"></i>
                         </a>
                     <a th:data-id="${item.id}"  
@@ -57,7 +59,7 @@
         <script>
             function showModal(id){
                 $('#orderId').text(id);
-                $('#yesOption').attr('href', '/admin/products/del/' + id);
+                $('#yesOption').attr('href', '/admin/orders/del/' + id);
                 $('#confirmationId').modal('show');
             }
         </script>
@@ -85,23 +87,23 @@
         </div>
 
         <div class="card-footer">
-            <nav aria-label="Page navigation example" class="text-center" th:if="${productPage.totalPages > 0}">
+            <nav aria-label="Page navigation example" class="text-center" th:if="${orderPage.totalPages > 0}">
                 <ul class="pagination justify-content-center">
-                    <li th:class="${0 == productPage.number +1} ? 'page-item active' : 'page-item'"><a
+                    <li th:class="${0 == orderPage.number +1} ? 'page-item active' : 'page-item'"><a
                             class="page-link"
-                            th:href="@{/admin/products?searchPage(name=${name}, size=${productPage.size}, page= ${1})}">Fist</a>
+                            th:href="@{/admin/orders?searchPage(name=${name}, size=${orderPage.size}, page= ${1})}">Fist</a>
                     </li>
-                    <li th:each="pageNum : ${pageNumbers}" th:if="${productPage.totalPages > 1}"
-                        th:class="${pageNum == productPage.number + 1} ? 'page-item active' : 'page-item'">
+                    <li th:each="pageNum : ${pageNumbers}" th:if="${orderPage.totalPages > 1}"
+                        th:class="${pageNum == orderPage.number + 1} ? 'page-item active' : 'page-item'">
 
                         <a class="page-link"
-                            th:href="@{/admin/products?searchPage(name=${name}, size=${productPage.size}, page= ${pageNum})}"
+                            th:href="@{/admin/orders?searchPage(name=${name}, size=${orderPage.size}, page= ${pageNum})}"
                             th:text="${pageNum}"></a>
                     </li>
 
-                    <li th:class="${productPage.totalPages == productPage.number} ? 'page-item active' : 'page-item'">
+                    <li th:class="${orderPage.totalPages == orderPage.number} ? 'page-item active' : 'page-item'">
                         <a class="page-link"
-                            th:href="@{/admin/products?searchPage(name=${name}, size=${productPage.size}, page= ${productPage.totalPages})}">last</a>
+                            th:href="@{/admin/orders?searchPage(name=${name}, size=${orderPage.size}, page= ${orderPage.totalPages})}">last</a>
                     </li>
                 </ul>
             </nav>

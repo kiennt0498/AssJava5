@@ -17,7 +17,7 @@ public class OrderDetail implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Double price;
+
 	private Integer quantity;
 	
 	@ManyToOne
