@@ -13,8 +13,8 @@ import fpoly.entity.Product;
 public interface ProductDao extends PagingAndSortingRepository<Product, Integer>{
 	List<Product> findByNameContaining(String name);
 	Page<Product> findByNameContaining(String name,Pageable pageable);
-	@Query("SELECT p FROM Product p WHERE p.id IN "
-			+ "(SELECT od.product.id FROM OrderDetail od "
-			+ "GROUP BY od.product.id ORDER BY SUM(od.quantity) DESC)")
-	List<Product> findTop8();
+	@Query(value = "select * from products where id in "
+			+ "(select top 4 productid from orderdetails group by productid order by sum(quantity) desc)"
+			, nativeQuery = true)
+	List<Product> findTop4();
 }

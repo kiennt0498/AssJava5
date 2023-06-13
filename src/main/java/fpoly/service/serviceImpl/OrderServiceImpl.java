@@ -91,6 +91,11 @@ public class OrderServiceImpl implements OrderService{
 		return dao.findByFullNameAccount(name, pageable);
 	}
 
+	@Override
+	public Order findNewOrder() {
+		return dao.findNewOrder();
+	}
+
 	
 	
 	

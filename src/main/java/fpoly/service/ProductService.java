@@ -43,4 +43,6 @@ public interface ProductService {
 
 	List<Product> findByNameContaining(String name);
 
+	List<Product> findTop4();
+
 }

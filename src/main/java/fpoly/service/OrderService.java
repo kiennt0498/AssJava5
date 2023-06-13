@@ -40,6 +40,8 @@ public interface OrderService {
 
 	Page<Order> findByFullNameAccount(String name, Pageable pageable);
 
+	Order findNewOrder();
+
 	
 
 }

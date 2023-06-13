@@ -97,6 +97,11 @@ public class ProductServiceImpl implements ProductService{
 	public void deleteAll() {
 		dao.deleteAll();
 	}
+
+	@Override
+	public List<Product> findTop4() {
+		return dao.findTop4();
+	}
 	
 	
 }
