@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fpoly.entity.Account;
 import fpoly.entity.AccountLogin;
@@ -20,7 +21,7 @@ import fpoly.service.ProductService;
 import fpoly.service.SessionService;
 
 @Controller
-@RequestMapping("home")
+
 public class IndexController {
 	@Autowired
 	ProductService service;
@@ -34,13 +35,14 @@ public class IndexController {
 	@Autowired
 	CookieService cookie;
 	
-	@GetMapping
-	public String index(Model model) {
+	@RequestMapping("home")
+	public String index(Model model, RedirectAttributes param) {
 		
 		List<Product> listTop4 = service.findTop4();
 		model.addAttribute("top4", listTop4);
 		model.addAttribute("list", service.findAll());
-		model.addAttribute("AccountLogin", new AccountLogin());
+		
+	
 		return "site/index/home";
 	}
 	

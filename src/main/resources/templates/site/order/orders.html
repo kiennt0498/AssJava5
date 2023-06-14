@@ -58,19 +58,19 @@
                 <ul class="pagination justify-content-center">
                     <li th:class="${0 == orderPage.number +1} ? 'page-item active' : 'page-item'"><a
                             class="page-link"
-                            th:href="@{/admin/orders?searchPage(name=${name}, size=${orderPage.size}, page= ${1})}">Fist</a>
+                            th:href="@{/home/order?searchPage(name=${name}, size=${orderPage.size}, page= ${1})}">Fist</a>
                     </li>
                     <li th:each="pageNum : ${pageNumbers}" th:if="${orderPage.totalPages > 1}"
                         th:class="${pageNum == orderPage.number + 1} ? 'page-item active' : 'page-item'">
 
                         <a class="page-link"
-                            th:href="@{/admin/orders?searchPage(name=${name}, size=${orderPage.size}, page= ${pageNum})}"
+                            th:href="@{/home/order?searchPage(name=${name}, size=${orderPage.size}, page= ${pageNum})}"
                             th:text="${pageNum}"></a>
                     </li>
 
                     <li th:class="${orderPage.totalPages == orderPage.number} ? 'page-item active' : 'page-item'">
                         <a class="page-link"
-                            th:href="@{/admin/orders?searchPage(name=${name}, size=${orderPage.size}, page= ${orderPage.totalPages})}">last</a>
+                            th:href="@{/home/order?searchPage(name=${name}, size=${orderPage.size}, page= ${orderPage.totalPages})}">last</a>
                     </li>
                 </ul>
             </nav>

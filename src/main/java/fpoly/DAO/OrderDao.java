@@ -12,4 +12,7 @@ public interface OrderDao extends PagingAndSortingRepository<Order, Long>{
 	
 	@Query(value = "select top 1 * from orders order by id desc",nativeQuery = true)
 	Order findNewOrder();
+	
+	@Query("select o from Order o where o.account.username=?1")
+	Page<Order> findByUserNameAccount(String name,Pageable pageable);
 }

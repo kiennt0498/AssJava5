@@ -11,20 +11,32 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import fpoly.entity.Order;
+import fpoly.entity.OrderDetail;
+import fpoly.service.OrderDetailsService;
 import fpoly.service.OrderService;
+import fpoly.service.SessionService;
 
 @Controller
 @RequestMapping("home/order")
 public class OrderSiteController {
 	@Autowired
 	OrderService service;
+	
+	@Autowired
+	SessionService session;
+	
+	@Autowired
+	OrderDetailsService detailService;
 	
 	@RequestMapping()
 	public String searchPage(
@@ -35,11 +47,11 @@ public class OrderSiteController {
 		if(currentPage != 0) currentPage--;
 		int pageSize = size.orElse(5);
 		
-		Pageable pageable = PageRequest.of(currentPage, pageSize,Sort.by(Direction.ASC,"id"));
+		Pageable pageable = PageRequest.of(currentPage, pageSize,Sort.by(Direction.DESC,"id"));
 		Page<Order> resultPage = null;
 		
 		
-			resultPage = service.findAll(pageable);	
+			resultPage = service.findByUserNameAccount(session.get("username"), pageable);	
 		
 		
 		int totalPages = resultPage.getTotalPages();
@@ -60,6 +72,16 @@ public class OrderSiteController {
 		
 		model.addAttribute("orderPage", resultPage);
 		
-		return "admin/orders/orders";
+		return "site/order/orders";
+	}
+	
+	@GetMapping("orderdetail/{id}")
+	public String getOrderDetailSite(@PathVariable("id") Long id,Model model,
+			@PageableDefault(size = 5,sort = "id",direction = Direction.DESC) Pageable pageable ) {
+			Order o = service.findById(id).orElse(null);
+			Page<OrderDetail> pageDetail = detailService.findByOrder(o,pageable);
+			model.addAttribute("orderDetails", pageDetail);
+			model.addAttribute("total", detailService.getAmount(o));
+			return "site/order/orderDetails";
 	}
 }

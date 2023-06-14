@@ -42,6 +42,8 @@ public interface OrderService {
 
 	Order findNewOrder();
 
+	Page<Order> findByUserNameAccount(String name, Pageable pageable);
+
 	
 
 }

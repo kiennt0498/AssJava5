@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fpoly.entity.Account;
 import fpoly.entity.AccountLogin;
@@ -17,7 +18,7 @@ import fpoly.service.CookieService;
 import fpoly.service.SessionService;
 
 @Controller
-@RequestMapping("home")
+
 public class LoginSiteController {
 	@Autowired
 	AccountService service;
@@ -28,28 +29,33 @@ public class LoginSiteController {
 	@Autowired
 	CookieService cookie;
 	
+//	@GetMapping()
+//	public String login(Model model) {
+//		model.addAttribute("accountLogin", new AccountLogin());
+//		return "admin/accounts/login";
+//	}
 	
-	
-	@PostMapping("stlogin")
-	public String checkLogin(@Validated @ModelAttribute("accountLogin") AccountLogin ac,
+	@PostMapping("home/login")
+	public String checkLoginSite(@Validated @ModelAttribute("AccountLogin") AccountLogin ac,
 								BindingResult result,
-								Model model) {
-		
+								Model model, RedirectAttributes param) {
+
 		
 		Account user = service.login(ac.getUsername(), ac.getPass());
-		
+	
 		if(user == null) {
-			model.addAttribute("error", "Invalid username or password");
-			return "home";
+			
+			param.addAttribute("error", "Invalid username or password");
+			return "redirect:/home";
 		}
 		
 		if(ac.getCheck()) {
-			cookie.add("user", ac.getUsername(), 10);
+			cookie.add("username", ac.getUsername(), 10);
 		}else {
-			if(!cookie.getValue("user").isEmpty()) cookie.remove("user");		
+			if(!cookie.getValue("username").isEmpty()) cookie.remove("user");		
 		}
 		
-		session.set("user", ac.getUsername());
+		session.set("username", ac.getUsername());
 		
 		Object ruri = session.get("redirect-uri");
 		
@@ -62,13 +68,13 @@ public class LoginSiteController {
 		model.addAttribute("accountName", ac.getUsername());
 		model.addAttribute("isCheck", true);
 		
-		return "forward:/home/order";
+		return "redirect:/home/order";
 	}
 	
-	@GetMapping("logout")
-	public String logout(Model model) {
+	@GetMapping("home/logout")
+	public String logoutSite(Model model) {
 		model.addAttribute("isCheck", false);
-		session.remove("user");
+		session.remove("username");
 		return "redirect:/home";
 	}
 }

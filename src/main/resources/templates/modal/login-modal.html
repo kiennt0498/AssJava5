@@ -1,0 +1,26 @@
+
+    <div class="modal-dialog" role="document" id="login-modal">
+      <div class="modal-content p-4">
+        <h3>Login</h3>
+        
+        <form  th:action="@{/home/login}" class="was-validated" method="post" th:object="${AccountLogin}">
+          <div class="form-group is-invalid">
+            <label>UserName</label>
+            <input type="text" class="form-control  is-valid" th:field="*{username}" required placeholder="Enter UserName">
+            <span class="invalid-feedback">Vui lòng nhập họ tên</span>
+          </div>
+          <div class="form-group is-invalid">
+            <label>Password:</label>
+            <input type="password" class="form-control is-valid" th:field="*{pass}" placeholder="Enter password" required>
+            <span class="invalid-feedback"> Vui lòng nhập mật khẩu</span>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" th:field="*{check}"> Remember me</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+          
+        </form>
+      </div>
+    </div>
+ 

@@ -66,12 +66,14 @@
                   <i class="fa-solid fa-user" style="color: #9b9da1;"></i> Tài khoản
                 </a>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#" onclick="openModal('login-modal')" >Đăng nhập</a>
+                  <a class="dropdown-item" href="#" onclick="openModal('login-modal')">Đăng nhập</a>
                   <a class="dropdown-item" href="#" onclick="openModal('register-modal')">Đăng ký</a>
                   <a class="dropdown-item" href="#" onclick="openModal('QMK-modal')">Quên mật khẩu</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="#">Tài khoản</a>
+                  <a class="dropdown-item" th:href="@{/home/order}">Order</a>
                   <a class="dropdown-item" href="#" onclick="openModal('DMK-modal')">Đổi mật khẩu</a>
+                  <a class="dropdown-item" th:href="@{/home/logout}" >Đăng xuất</a>
                 </div>
               </li>
               
