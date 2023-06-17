@@ -11,7 +11,7 @@
   <link rel="stylesheet" th:href="@{/css/index.css}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script th:href="@{/load-modal}"></script>
+  <script th:href="@{/load-modal}"></script>
 </head>
 
 <body>
@@ -31,12 +31,13 @@
 
 
 
-    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+      aria-hidden="true">
       <div class="modal-dialog" role="document">
         <!-- Nội dung modal -->
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Error</h5>
+            <h5 class="modal-title">Alert</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -60,39 +61,52 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <script>
-    function openModal(modalId) {
-      var modalContainer = $("#modal-container");
+    var currentURL = window.location.href;
 
-      $.ajax({
-        url: "/load-modal",
-        type: "GET",
-        data: { modalId: modalId },
-        success: function (response) {
-          modalContainer.html(response);
-          modalContainer.modal('show');
-        },
-        error: function () {
-          console.error("Không thể tải nội dung modal.");
-        }
+    // Kiểm tra xem URL có chứa tham số không
+    if (currentURL.includes('?')) {
+      // URL chứa tham số
+      var paramsString = currentURL.split('?')[1]; // Lấy phần chuỗi tham số sau dấu "?"
+      var params = new URLSearchParams(paramsString);
+
+      // Kiểm tra xem có tồn tại tham số có tên là "param" hay không
+      if (params.has('error')) {
+        // Tham số "param" tồn tại
+        $(document).ready(function () {
+
+
+          $('#errorModal').modal('show');
+        });
+      }
+    }
+  </script>
+
+  <script>
+      function openModal(modalId) {
+        var modalContainer = $("#modal-container");
+
+        $.ajax({
+          url: "/load-modal",
+          type: "GET",
+          data: { modalId: modalId },
+          success: function (response) {
+            modalContainer.html(response);
+            modalContainer.modal('show');
+          },
+          error: function () {
+            console.error("Không thể tải nội dung modal.");
+          }
+        });
+      }
+
+      // Khi người dùng nhấp vào nút đóng hoặc bấm bất kỳ nơi nào bên ngoài modal, ẩn modal form
+      var closeButtons = document.querySelectorAll(".modal #close");
+      closeButtons.forEach(function (button) {
+        button.onclick = function () {
+          var modal = button.closest(".modal");
+          modal.style.display = "none";
+        };
       });
-    }
-    $(document).ready(function() {
-    // Kiểm tra nếu giá trị error tồn tại
-    var error = '${param.error}';
-    console.log(error);
-    if (error && error.trim() !== '') {
-      // Hiển thị modal
-      $('#errorModal').modal('show');
-    }
-  });
-    // Khi người dùng nhấp vào nút đóng hoặc bấm bất kỳ nơi nào bên ngoài modal, ẩn modal form
-    var closeButtons = document.querySelectorAll(".modal #close");
-    closeButtons.forEach(function (button) {
-      button.onclick = function () {
-        var modal = button.closest(".modal");
-        modal.style.display = "none";
-      };
-    });
   </script>
 
   <script src="https://kit.fontawesome.com/ce7b1cdc6d.js" crossorigin="anonymous"></script>

@@ -19,8 +19,7 @@ public class AccountServiceImpl implements AccountService{
 	@Autowired
 	AccountDao dao;
 	
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	
 	
 	
 	@Override
@@ -37,7 +36,7 @@ public class AccountServiceImpl implements AccountService{
 
 	@Override
 	public <S extends Account> S save(S entity) {
-		entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+
 		return dao.save(entity);
 	}
 
@@ -104,7 +103,7 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	public Account login(String username,String pass) {
 		Optional<Account> ac = dao.findById(username);
-		if(ac.isPresent()&& passwordEncoder.matches(pass, ac.get().getPassword())) {
+		if(ac.isPresent()&& ac.get().getPassword().equals(pass)) {
 			ac.get().setPassword("");
 			return ac.get();
 		}

@@ -46,6 +46,7 @@ public class LoginSiteController {
 		if(user == null) {
 			
 			param.addAttribute("error", "Invalid username or password");
+			
 			return "redirect:/home";
 		}
 		
@@ -55,7 +56,7 @@ public class LoginSiteController {
 			if(!cookie.getValue("username").isEmpty()) cookie.remove("user");		
 		}
 		
-		session.set("username", ac.getUsername());
+		session.set("username", user.getUsername());
 		
 		Object ruri = session.get("redirect-uri");
 		
@@ -65,10 +66,10 @@ public class LoginSiteController {
 		}
 		
 		
-		model.addAttribute("accountName", ac.getUsername());
+		model.addAttribute("accountName", user.getUsername());
 		model.addAttribute("isCheck", true);
 		
-		return "redirect:/home/order";
+		return "forward:/home/order";
 	}
 	
 	@GetMapping("home/logout")

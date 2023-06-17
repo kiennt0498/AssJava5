@@ -7,43 +7,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import fpoly.entity.Account;
 import fpoly.service.AccountService;
 import fpoly.service.SessionService;
 
 @Component
-public class AdminAuthInterceptor implements HandlerInterceptor{
-	
-	@Autowired
-	SessionService session;
-	
+public class SiteAuthInterceptor implements HandlerInterceptor{
 	@Autowired
 	AccountService service;
 	
+	@Autowired
+	SessionService session;
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		String name = session.get("username");
 		
-		String username =  session.get("user");
-		
-		String error = "";
-		
-		if(username == null) error = "please login";
-		
-		if(username != null) {
-			Account ac =  service.findById(username).orElse(null);
-			
-			if(!ac.getAdmin()) error = "Access denied";
-		}
-		
-		if(error.length() >0) {
+		if(name == null) {
 			session.set("redirect-uri", request.getRequestURI());
-			response.sendRedirect("/adlogin?error="+error);
+			response.sendRedirect("/home?error=please login");
 			return false;
 		}
 		
-		
 		return true;
 	}
+	
 	
 }

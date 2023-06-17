@@ -1,31 +1,31 @@
-<div class="modal fade" id="register-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+
+    <div class="modal-dialog" role="document" id="register-modal"> 
       <div class="modal-content p-4">
         <h2>Register Account</h2>
-        <form action="" method="post" class="was-validated">
+        <form th:action="@{/home/saveorupdate}" method="post" class="was-validated" th:object="${account}" enctype="multipart/form-data">
           <div class="form-group is-invalid">
             <label>UserName</label>
-            <input type="text" class="form-control is-valid" path="username" placeholder="Enter UserName" required />
+            <input type="text" class="form-control is-valid" path="username" placeholder="Enter UserName" required th:field="*{username}"/>
             <span class="invalid-feedback">Vui lòng nhập tài khoản</span>
           </div>
           <div class="form-group is-valid">
             <label>Password:</label>
-            <input type="password" class="form-control is-valid" path="password" placeholder="Enter password"
+            <input type="password" class="form-control is-valid" path="password" placeholder="Enter password" th:field="*{password}"
               required />
             <span class="invalid-feedback">Vui lòng nhập pass</span>
           </div>
           <div class="form-group is-valid">
             <label>FullName</label>
-            <input type="text" class="form-control  is-valid" path="fullname" placeholder="Enter fullname" required />
+            <input type="text" class="form-control  is-valid" path="fullname" placeholder="Enter fullname" required th:field="*{fullname}" />
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input type="email" class="form-control" path="email" placeholder="Enter email" required />
+            <input type="email" class="form-control" path="email" placeholder="Enter email" required th:field="*{email}" />
             <span class="invalid-feedback">Vui lòng nhập đúng email</span>
           </div>
           <div class="form-group">
             <label>Photo</label>
-            <input type="file" class="form-control" path="photo" placeholder="Enter photo" />
+            <input type="file" class="form-control" path="photo" placeholder="Enter photo" name="image" />
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
           
@@ -33,4 +33,4 @@
         </form>
       </div>
     </div>
-  </div>
+  

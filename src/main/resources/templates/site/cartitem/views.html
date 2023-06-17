@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{admin/dashboardLayout.html}">
+    layout:decorate="~{site/dashboardLayoutSite.html}">
 
 <head>
 </head>
@@ -8,86 +8,59 @@
 <body>
     <div class="card" layout:fragment="content">
         <div class="card-header">
-            <h2>Order Detail</h2>
+            <h2>Cart Item</h2>
             
             <div class="row">
                 <div class="col">
                     <div class="float-left">
-                        <a th:href="@{/admin/orders}" class="btn btn-outline-info">Back To Order List</a>
+                        <a th:href="@{/home}" class="btn btn-outline-info">Buy more</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <table class="table table-striped">
-            <tr>
-                <th>Id</th>
-				<th>Name</th>
-				<th>Price</th>
-				<th>Quantity</th>
-				<th>Amount</th>
-                <td>&nbsp;</td>
-            </tr>
-            <tr th:each="item : ${orderDetails.content}">
-                <td>[[${item.id}]]</td>
-                <td th:text="${item.product.name}"></td>
-                <td th:text="${item.product.price}"></td>
-                <td th:text="${item.quantity}"></td>
-                <td>
-                    <script th:inline="javascript">
-                        var price = /*[[${item.product.price}]]*/ 0;
-                        var quantity = /*[[${item.quantity}]]*/ 0;
-                        var result = price * quantity;
-                        var formattedResult = result.toLocaleString();
-                        document.write(formattedResult);
-                    </script>
-                </td>
-                <td>
-                    <a th:href="@{'/admin/orders/edit/' + ${item.id}}" aria-hidden="true" class="btn btn-primary">
-                        <i class="fa-solid fa-circle-info"></i>
-                        </a>
-                    <a th:data-id="${item.id}"  
-                        onclick="showModal(this.getAttribute('data-id'))" 
-                        aria-hidden="true" class="btn btn-danger">
-                        <i class="fa-solid fa-trash"></i>
-                    </a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                    <form action="/home/cartitem/update" method="post" th:each="item : ${CART_ITEMS}">
+                        <input type="hidden" name="id" th:value="${item.ProductId}" />
+                    <tr>
+                        <td th:text="${item.ProductId}"></td>
+                        <td th:text="${item.Name}"></td>
+                        <td th:text="${item.Price}"></td>
+                        <td><input name="qty" th:value="${item.Qty}"
+                            onblur="this.form.submit()" style="width: 50px;"></td>
+                        <td th:text="${item.Price*item.qty}"></td>
+                        <td><a class="btn btn-primary btn-sm"
+                            th:href="@{'/home/cartitem/del/' +${item.ProductId}}">Remove</a></td>
+                    </tr>
+                    </form>
+            
 
-                </td>
-            </tr>
+
+            </tbody>
         </table>
 
         <div class="row">
             <div class="col">
-                <h2 class="mr-2 float-right" id="totalAmount"></h2>
+                <h2 class="mr-2 float-left" id="totalAmount"></h2>
+                <a th:href="@{/home/cartitem/buy}" class="btn btn-outline-success float-right">Thanh toán</a>
                 <script th:inline="javascript">
-                    var total = /*[[${total}]]*/ 0;
+                    var total = /*[[${TOTAL}]]*/ 0;
                     var formattedTotal = total.toLocaleString();
                     document.getElementById('totalAmount').innerText = 'Tổng tiền: ' + formattedTotal +'đ';
                 </script>
             </div>
-        </div>
-
-        <div class="card-footer">
-            <nav aria-label="Page navigation example" class="text-center" th:if="${orderDetails.totalPages > 0}">
-                <ul class="pagination justify-content-center">
-                    <li th:class="${0 == orderDetails.number +1} ? 'page-item active' : 'page-item'"><a
-                            class="page-link"
-                            th:href="@{/admin/orders?searchPage(name=${name}, size=${orderDetails.size}, page= ${1})}">Fist</a>
-                    </li>
-                    <li th:each="pageNum : ${pageNumbers}" th:if="${orderDetails.totalPages > 1}"
-                        th:class="${pageNum == orderDetails.number + 1} ? 'page-item active' : 'page-item'">
-
-                        <a class="page-link"
-                            th:href="@{/admin/orders?searchPage(name=${name}, size=${orderDetails.size}, page= ${pageNum})}"
-                            th:text="${pageNum}"></a>
-                    </li>
-
-                    <li th:class="${orderDetails.totalPages == orderDetails.number} ? 'page-item active' : 'page-item'">
-                        <a class="page-link"
-                            th:href="@{/admin/orders?searchPage(name=${name}, size=${orderDetails.size}, page= ${orderDetails.totalPages})}">last</a>
-                    </li>
-                </ul>
-            </nav>
         </div>
 
     </div>
