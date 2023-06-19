@@ -29,11 +29,12 @@ layout:decorate="~{admin/dashboardLayout.html}">
                 }
               </script>
               <div class="border p-3">
-                  <img src="http://mnhduong-nt.khanhhoa.edu.vn/images/no-image.png" alt="" id="image" class="img-fluid" >
+                  <img th:if="${product.image == null}" src="http://mnhduong-nt.khanhhoa.edu.vn/images/no-image.png" alt="" id="image" class="img-fluid" >
+                  <img th:if="${product.image != null}" th:src="@{'/uploads/'+${product.image}}" alt="" class="img-fluid">
               </div>
               <div class="form-group">
-                <input type="file" class="form-control mt-3" name="photo" onchange="chooseFile(this)">
-                  <span class="form-text text-muted">Không để trống image</span>
+                <input type="file" class="form-control mt-3" name="photo"  th:value="${product.image}" onchange="chooseFile(this)">
+                  <span th:if="${isImage}" style="color: red;" class="form-text text-muted">Không để trống image</span>
               </div>
               <div class="input-group">
                 <div class="input-group-append">

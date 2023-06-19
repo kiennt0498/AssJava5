@@ -8,36 +8,39 @@
 
 <body>
     <div class="container px-4 px-lg-5 my-5">
-        <div class="row gx-4 gx-lg-5 align-items-center" >
-            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="image/yen1.jpg" alt="..." /></div>
-            <div class="col-md-6">
-                
-                <h1 class="display-5 fw-bolder" th:text="${product.name}"></h1>
-                <div class="fs-5 mb-5">
-
-                    <h3 style="color: red;" id="price">3.900.00 đ</h3>
-                </div>
-                <script th:inline="javascript">
-                    var total = /*[[${product.price}]]*/ 0;
-                    var formattedTotal = total.toLocaleString();
-                    document.getElementById('price').innerText =  formattedTotal +'đ';
-                </script>
-                <p class="lead">Yến sào loại mỏng, màu trắng ngà, mức độ lông vừa, sạch phân rêu, lồi lõm không đồng
-                    đều, tiệt trùng.</p>
-                <div class="d-flex">
-                    <button onclick="giam()"
-                        style="width: 2rem; border-radius: 3px;border: none;font-size: larger;">-</button>
-                    <input class="form-control text-center me-3 " id="inputQuantity" type="number" value="1" min="1"
-                        style="max-width: 3rem" />
-                    <button onclick="tang()" class="mr-3"
-                        style="width: 2rem; border-radius: 3px;border: none;font-size: larger;">+</button>
-                    <button class="btn btn-outline-dark flex-shrink-0" type="button">
-                        <i class="bi-cart-fill me-1"></i>
-                        Thêm giỏ hàng
-                    </button>
+        <form th:action="@{}" th:object="${product}">
+            <div class="row gx-4 gx-lg-5 align-items-center" >
+                <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" th:src="@{'upload/'+${photo}}" alt="..." /></div>
+                <div class="col-md-6">
+                    
+                    <h1 class="display-5 fw-bolder" th:field="*{product}"></h1>
+                    <div class="fs-5 mb-5">
+    
+                        <h3 style="color: red;" id="price"></h3>
+                        <input type="text">
+                    </div>
+                    <script th:inline="javascript">
+                        var total = /*[[${product.price}]]*/ 0;
+                        var formattedTotal = total.toLocaleString();
+                        document.getElementById('price').innerText =  formattedTotal +'đ';
+                    </script>
+                    <p class="lead">Yến sào loại mỏng, màu trắng ngà, mức độ lông vừa, sạch phân rêu, lồi lõm không đồng
+                        đều, tiệt trùng.</p>
+                    <div class="d-flex">
+                        <button onclick="giam()"
+                            style="width: 2rem; border-radius: 3px;border: none;font-size: larger;">-</button>
+                        <input class="form-control text-center me-3 " id="inputQuantity" type="number" value="1" min="1"
+                            style="max-width: 3rem" />
+                        <button onclick="tang()" class="mr-3"
+                            style="width: 2rem; border-radius: 3px;border: none;font-size: larger;">+</button>
+                        <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                            <i class="bi-cart-fill me-1"></i>
+                            Thêm giỏ hàng
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
     <!-- Related items section-->
 

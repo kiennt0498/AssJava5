@@ -66,6 +66,7 @@ public class ProductController {
 		Product product = service.findById(id).orElse(null);
 		model.addAttribute("product", product);
 		model.addAttribute("select", product.getCategory().getId());
+		
 		model.addAttribute("isEdit", true);
 		return "admin/products/addOrEdit";
 	}
@@ -80,8 +81,8 @@ public class ProductController {
 	public String saveOrUpdate(Model model,@Valid @ModelAttribute("product") Product ca,
 								BindingResult result,
 								@RequestParam("photo") MultipartFile imageFile) {
-		if(result.hasErrors()) {
-			model.addAttribute("message", "Vui long nhap lai");
+		if(result.hasErrors() || imageFile.isEmpty()) {
+			model.addAttribute("isImage", true);
 			return "admin/products/addOrEdit";
 		}
 		String fileName = StringUtils.cleanPath(imageFile.getOriginalFilename());
@@ -93,6 +94,7 @@ public class ProductController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		model.addAttribute("isImage", false);
 		model.addAttribute("message", "Save Done");
 		model.addAttribute("isEdit", false);
 		return "redirect:/admin/products";

@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import fpoly.entity.CartItem;
 import fpoly.entity.Product;
 import fpoly.service.ProductService;
 
@@ -20,7 +21,13 @@ public class ProductSiteController {
 	public String getProduct(@PathVariable("id") Integer id, Model model) {
 		Product p = service.findById(id).orElse(null);
 		
-		model.addAttribute("product", p);
+		CartItem item = new CartItem();
+		item.setProductId(p.getId());
+		item.setName(p.getName());
+		item.setPrice(p.getPrice());
+		
+		model.addAttribute("product", item);
+		model.addAttribute("photo", p.getImage());
 		return "site/index/detail";
 	}
 }

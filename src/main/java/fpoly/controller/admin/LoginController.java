@@ -66,15 +66,15 @@ public class LoginController {
 		}
 		
 		
-		model.addAttribute("accountName", ac.getUsername());
-		model.addAttribute("isCheck", true);
+		model.addAttribute("accountName", user.getUsername());
+		model.addAttribute("isLoginCheck", true);
 		
 		return "forward:/admin/products";
 	}
 	
 	@GetMapping("admin/logout")
 	public String logout(Model model) {
-		model.addAttribute("isCheck", false);
+		model.addAttribute("isLoginCheck", false);
 		session.remove("user");
 		return "redirect:/admin/login";
 	}
