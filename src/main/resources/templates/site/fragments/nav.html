@@ -14,7 +14,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#"><i class="fa-solid fa-house" ></i> Trang chủ </a>
+              <a class="nav-link" th:href="@{/home}"><i class="fa-solid fa-house" ></i> Trang chủ </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#"><i class="fa-regular fa-circle-question"></i> Giới thiệu</a>
@@ -38,23 +38,23 @@
           <ul class="navbar-nav">
             <li class="nav-item dropdown ml-5 mr-5 ">
                 <a class="nav-link dropdown-toggle btn" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-                  <i class="fa-solid fa-basket-shopping" style="color: #a4a5a8;"></i> Giỏ hàng(0)
+                  <i class="fa-solid fa-basket-shopping" style="color: #a4a5a8;"></i>
+                   Giỏ hàng(<span th:text="${param.count}"></span>)
                 </a>
                 <div class="dropdown-menu">
-                 <form action="" method="post">
-                    <table class="table">
+                 <form action="" method="post" >
+                    <table class="table" >
                        
                         <tbody style="height: 20px;">
-                          <tr style="height: 30px;">
-                            <td><img src="image/yen1.jpg" alt=""  style="width: 50px;"></td>
-                            <td>1</td>
-                            <td>3900000đ</td>
+                          <tr style="height: 30px;" th:each="itemCartNav : ${listBuy}">
+                            <td th:text="${itemCartNav.Name}"></td>
+                            <td th:text="${itemCartNav.Price}"></td>
                             <td><a href=""><i class="fa-regular fa-trash-can" style="color: #dd2222;"></i></a></td>
                           </tr>
                         </tbody>
                       </table>
                       <div class="from-group col-md-auto">
-                        <button class="btn btn-dark" style="width: 100%;">Xem giỏ hàng</button>
+                        <a th:href="@{/home/cartitem}" class="btn btn-dark" style="width: 100%;">Xem giỏ hàng</a>
                       </div>
                  </form> 
                  

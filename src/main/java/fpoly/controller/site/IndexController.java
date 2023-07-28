@@ -19,6 +19,7 @@ import fpoly.service.AccountService;
 import fpoly.service.CookieService;
 import fpoly.service.ProductService;
 import fpoly.service.SessionService;
+import fpoly.service.ShoppingCartService;
 
 @Controller
 
@@ -35,14 +36,18 @@ public class IndexController {
 	@Autowired
 	CookieService cookie;
 	
+	@Autowired
+	ShoppingCartService cartService;
+	
 	@RequestMapping("home")
 	public String index(Model model, RedirectAttributes param) {
 		
 		List<Product> listTop4 = service.findTop4();
 		model.addAttribute("top4", listTop4);
 		model.addAttribute("list", service.findAll());
-		
-	
+		param.addFlashAttribute("count", 0);
+		model.addAttribute("listBuy", cartService.getAllItem());
+		System.out.println(cartService.getAllItem().isEmpty());
 		return "site/index/home";
 	}
 	

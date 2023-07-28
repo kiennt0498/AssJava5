@@ -1,5 +1,6 @@
 package fpoly.controller.site;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fpoly.entity.Account;
 import fpoly.entity.CartItem;
@@ -26,7 +28,7 @@ import fpoly.service.SessionService;
 import fpoly.service.ShoppingCartService;
 
 @Controller
-@RequestMapping("home/cart")
+@RequestMapping("home/cartitem")
 public class CartController {
 	@Autowired
 	ProductService service;
@@ -49,15 +51,15 @@ public class CartController {
 	@Autowired
 	SessionService session;
 	
-	@GetMapping("views")
+	@GetMapping()
 	public String viewCart(Model model) {
 		model.addAttribute("CART_ITEMS", cartSevice.getAllItem());
 		model.addAttribute("TOTAL", cartSevice.getAmount());
-		return "cart-item";
+		return "site/cartitem/views";
 	}
 	
 	@GetMapping("add/{id}")
-	public String addCart(@PathVariable("id") Integer id) {
+	public String addCart(@PathVariable("id") Integer id, RedirectAttributes param) {
 		Optional<Product> p = service.findById(id);
 		if(p != null) {
 			Product pr = p.get();
@@ -69,25 +71,27 @@ public class CartController {
 			
 			cartSevice.add(item);
 		}
-		return "redirect:/home/cart/views";
+		
+		param.addAttribute("count", cartSevice.getCount());
+		return "redirect:/home";
 	}
 	
 	@GetMapping("clear")
 	public String clearCart() {
 		cartSevice.clear();
-		return "redirect:/home/cart/views";
+		return "redirect:/home/cartitem";
 	}
 	
 	@GetMapping("del/{id}")
 	public String cartDel(@PathVariable("id") Integer id) {
 		cartSevice.remove(id);
-		return "redirect:/home/cart/views";
+		return "redirect:/home/cartitem";
 	}
 	
 	@PostMapping("update")
 	public String cartUpdate(@RequestParam("id") Integer id, @RequestParam("qty") Integer qty) {
 		cartSevice.update(id, qty);
-		return "redirect:/home/cart/views";
+		return "redirect:/home/cartitem";
 	}
 	
 	@GetMapping("buy")
@@ -100,7 +104,7 @@ public class CartController {
 		oService.save(o);
 		
 		Order orderNew = oService.findNewOrder();
-		List<CartItem> list = (List<CartItem>) cartSevice.getAllItem();
+		List<CartItem> list = new ArrayList<>(cartSevice.getAllItem());
 		
 		for (CartItem item : list) {
 			OrderDetail od = new OrderDetail();
@@ -109,6 +113,6 @@ public class CartController {
 			od.setQuantity(item.getQty());
 			odService.save(od);
 		}
-		return "site/order/orders";
+		return "redirect:/home/order";
 	}
 }

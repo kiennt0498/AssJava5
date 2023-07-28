@@ -36,7 +36,7 @@
         <!-- Nội dung modal -->
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Error</h5>
+            <h5 class="modal-title">Alert</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -80,7 +80,7 @@
     // Kiểm tra nếu giá trị error tồn tại
     var error = '${param.error}';
     console.log(error);
-    if (error && error.trim() !== '') {
+    if (error && error.trim() != '') {
       // Hiển thị modal
       $('#errorModal').modal('show');
     }

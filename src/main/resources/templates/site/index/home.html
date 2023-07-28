@@ -69,7 +69,7 @@
                 </div>
                 <div class="card-footer text-center">
                   <p th:text="${product.price} + 'đ'" style="color: red;font-weight: bolder;"> </p>
-                  <a href="" class="btn btn-success"><i class="fa-solid fa-cart-shopping" style="color: #e8eaed;"></i>  Thêm hàng vào giỏ</a>
+                  <a th:href="@{'/home/cartitem/add/' +${product.id}}" class="btn btn-success"><i class="fa-solid fa-cart-shopping" style="color: #e8eaed;"></i>  Thêm hàng vào giỏ</a>
                 </div>
               </div>
             </div>

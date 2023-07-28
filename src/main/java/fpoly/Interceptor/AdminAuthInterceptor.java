@@ -33,7 +33,7 @@ public class AdminAuthInterceptor implements HandlerInterceptor{
 		if(username != null) {
 			Account ac =  service.findById(username).orElse(null);
 			
-			if(ac.getAdmin()) error = "Access denied";
+			if(!ac.getAdmin()) error = "Access denied";
 		}
 		
 		if(error.length() >0) {

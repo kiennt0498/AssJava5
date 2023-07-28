@@ -75,13 +75,5 @@ public class OrderSiteController {
 		return "site/order/orders";
 	}
 	
-	@GetMapping("orderdetail/{id}")
-	public String getOrderDetailSite(@PathVariable("id") Long id,Model model,
-			@PageableDefault(size = 5,sort = "id",direction = Direction.DESC) Pageable pageable ) {
-			Order o = service.findById(id).orElse(null);
-			Page<OrderDetail> pageDetail = detailService.findByOrder(o,pageable);
-			model.addAttribute("orderDetails", pageDetail);
-			model.addAttribute("total", detailService.getAmount(o));
-			return "site/order/orderDetails";
-	}
+	
 }
